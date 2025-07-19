@@ -1,102 +1,1237 @@
 <!DOCTYPE html>
-<html lang="en">
- 
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>自动轮播图</title>
-    <style>
+    <title>卢家演的作品集</title>
+    <!-- <style>
+        全局样式
         * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* 导航栏样式 */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
             list-style: none;
         }
- 
-        section {
-            position: relative;
-            /* 图片的宽高 */
-            width: 1920px;
-            height: 500px;
-            /* background-color: rgb(90, 71, 71); */
-            margin: 50px auto;
-            overflow: hidden;
+        
+        .nav-links li {
+            margin-left: 2rem;
         }
- 
-        ul {
-            position: absolute;
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #3498db;
+        }
+        
+        /* 搜索栏样式 */
+        .search-bar {
             display: flex;
-            /* 动画效果循环轮播10s一次 */
-            animation: move 10s infinite;
+            margin: 2rem auto;
+            max-width: 600px;
         }
- 
-        @keyframes move {
-            0% {
-                left: 0%;
+        
+        .search-bar input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+        
+        .search-bar button {
+            padding: 0.8rem 1.5rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-bar button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* 轮播图样式 */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            margin: 3rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .carousel-slide {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .slide-item {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .slide-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .slide-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            /* background: rgba(0, 0, 0, 0.7); */
+            color: white;
+            padding: 1rem;
+            /* transform: translateX(8%); */
+            /* transform: translateY(5%); */
+        }
+        
+        .slide-info h3 {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* 修改轮播按钮样式 - 只显示图标 */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: white;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        
+        .carousel-btn:hover {
+            opacity: 1;
+        }
+        
+        #prevBtn {
+            left: 20px;
+        }
+        
+        #nextBtn {
+            right: 20px;
+        }
+        
+        .carousel-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            z-index: 10;
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        
+        .nav-dot.active {
+            background: white;
+        }
+        
+        /* 图片放大预览样式 */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .modal-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 3rem;
+            cursor: pointer;
+        }
+        
+        /* 自我介绍部分 */
+        .about-me {
+            background-color: white;
+            padding: 3rem 0;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .about-me h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .profile-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #3498db;
+        }
+        
+        .bio {
+            flex: 1;
+        }
+        
+        .bio h3 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        .bio p {
+            margin-bottom: 1rem;
+        }
+        
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .skill {
+            background-color: #3498db;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        /* 作品展示部分 - 图片加大 */
+        .portfolio {
+            background-color: white;
+            padding: 3rem 0;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .portfolio h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+        
+        /* 作品分类导航 */
+        .portfolio-categories {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .category-btn {
+            padding: 0.5rem 1.5rem;
+            background-color: #f5f5f5;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-btn.active {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .category-btn:hover {
+            background-color: #ddd;
+        }
+        
+        .category-btn.active:hover {
+            background-color: #2980b9;
+        }
+        
+        /* 作品展示区 - 图片加大 */
+        .works-container {
+            display: none;
+        }
+        
+        .works-container.active {
+            display: block;
+        }
+        
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .work-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .work-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .work-img {
+            width: 100%;
+            height: 350px; /* 图片高度加大 */
+            object-fit: cover;
+        }
+        
+        .work-info {
+            padding: 1.5rem;
+            background: white;
+        }
+        
+        .work-info h3 {
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        
+        /* 联系方式部分 */
+        .contact {
+            background-color: white;
+            padding: 3rem 0;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+        }
+        
+        .contact-methods {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .contact-method {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .contact-method i {
+            font-size: 2rem;
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-method h3 {
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
             }
- 
-            15% {
-                left: 0%;
+            
+            .nav-links {
+                margin-top: 1rem;
             }
- 
-            20% {
-                left: -100%;
+            
+            .nav-links li {
+                margin-left: 1rem;
+                margin-right: 1rem;
             }
- 
-            35% {
-                left: -100%;
+            
+            .about-content {
+                flex-direction: column;
+                text-align: center;
             }
- 
-            40% {
-                left: -200%;
+            
+            .skills {
+                justify-content: center;
             }
- 
-            55% {
-                left: -200%;
+            
+            .carousel-container {
+                height: 350px;
             }
- 
-            60% {
-                left: -300%;
+            
+            .portfolio-categories {
+                flex-direction: column;
+                align-items: center;
             }
- 
-            75% {
-                left: -300%;
+            
+            .works-grid {
+                grid-template-columns: 1fr;
             }
- 
-            80% {
-                left: -400%;
-            }
- 
-            100% {
-                left: -400%;
+            
+            .work-img {
+                height: 250px; /* 移动端适当减小高度 */
             }
         }
-    </style>
+    </style> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="./CSS/style.css">
 </head>
- 
 <body>
-    <section>
-        <!-- 平移轮播 -->
-        <ul>
-            <li>
-                <img src="./img/01.jpg" alt="">
-            </li>
- 
-            <li>
-                <img src="./img/02.jpg" alt="">
-            </li>
- 
-            <li>
-                <img src="./img/03.jpg" alt="">
-            </li>
-            <li>
-                <img src="./img/04.jpg" alt="">
-            </li><li>
-                <img src="./img/01.jpg" alt="">
-            </li>
-           
-        </ul>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">卢家演的作品集</div>
+                <ul class="nav-links">
+                    <li><a href="#about">关于我</a></li>
+                    <li><a href="#portfolio">我的作品</a></li>
+                    <li><a href="#contact">联系方式</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- 搜索栏 -->
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" placeholder="搜索作品...">
+            <button><i class="fas fa-search"></i> 搜索</button>
+        </div>
+    </div>
+    
+    <!-- 轮播图部分 -->
+    <div class="container">
+        <div class="carousel-container">
+            <div class="carousel-slide">
+                <!-- 克隆最后一张放到开头 -->
+                <div class="slide-item">
+                    <img src="./images/banner5.jpg" alt="精选作品1">
+                    <div class="slide-info">
+                        <h3>精选作品展示</h3>
+                        <p>这是我的最佳作品合集，展示我的设计风格和技术能力</p>
+                    </div>
+                </div>
+                
+                <!-- 原始三张轮播图 -->
+                <div class="slide-item">
+                    <img src="./images/banner2.jpg" alt="精选作品2">
+                    <div class="slide-info">
+                        <h3>包装设计</h3>
+                        <p>AI、blender</p>
+                    </div>
+                </div>
+                
+                <div class="slide-item">
+                    <img src="./images/banner1.jpg" alt="精选作品3">
+                    <div class="slide-info">
+                        <h3>包装设计</h3>
+                        <p>AI、blender、C4D</p>
+                    </div>
+                </div>
+                
+                <div class="slide-item">
+                    <img src="./images/banner3.jpg" alt="精选作品4">
+                    <div class="slide-info">
+                        <h3>包装设计</h3>
+                        <p>AI、C4D、Arnold渲染器</p>
+                    </div>
+                </div>
+                <div class="slide-item">
+                    <img src="./images/banner4.jpg" alt="精选作品5">
+                    <div class="slide-info">
+                        <h3>包装设计</h3>
+                        <p>CDR、C4D、OCtane渲染器</p>
+                    </div>
+                </div>
+                <div class="slide-item">
+                    <img src="./images/banner5.jpg" alt="精选作品6">
+                    <div class="slide-info">
+                        <h3>3D建模渲染</h3>
+                        <p>C4D、Arnold渲染器</p>
+                    </div>
+                </div>
+             
+                
+                <!-- 克隆第一张放到末尾 -->
+                <div class="slide-item">
+                    <img src="./images/banner2.jpg" alt="精选作品1">
+                    <div class="slide-info">
+                        <h3>精选作品展示</h3>
+                        <p>这是我的最佳作品合集，展示我的设计风格和技术能力</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="prevBtn" class="carousel-btn">&#10094;</button>
+            <button id="nextBtn" class="carousel-btn">&#10095;</button>
+            
+            <div class="carousel-nav">
+                <div class="nav-dot active" data-index="1"></div>
+                <div class="nav-dot" data-index="2"></div>
+                <div class="nav-dot" data-index="3"></div>
+                <div class="nav-dot" data-index="4"></div>
+                <div class="nav-dot" data-index="5"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 自我介绍部分 -->
+    <section id="about" class="about-me">
+        <div class="container">
+            <h2>关于我</h2>
+            <div class="about-content">
+                <img src="./images/头像.jpg" alt="个人照片" class="profile-img">
+                <div class="bio">
+                    <h3>卢家演</h3>
+                    <p>大家好，我是一名18线设计师。如果宇宙的尽头是玄学，那么设计的尽头就是“熬夜”和“卖——课”，但是，但是，放心，作为18线的我，不卖课，只能“卖”自己了，来吧，跟着我，一起走向设计的深渊吧。</p>
+                    <p>让我带你走向设计的夜，甲方100就能买我一个晚上，每天我都在“我是天才” 和 “我是废材” 之间徘徊。曾经的我以为手握设计的鼠标就是艺术家，结果发现本质是伺候甲方的 “电子裁缝”。熬夜改稿是日常，咖啡喝到心脏蹦迪，头发掉得能织毛衣。交稿前反复检查千百遍，生怕哪个像素没对齐，结果甲方爸爸轻飘飘一句 “还是第一版好”。但说真的，每次看到自己的方案落地，从一堆乱线变成惊艳的海报 / 建筑 / 产品，那种成就感比喝十杯奶茶还上头。毕竟设计狗的快乐就是这么朴实无华：甲方说 “过了”，比中五百万还激动！总之，入坑设计就像谈恋爱，每天都想分手，但看到成果的那一刻，又心甘情愿再爱（熬）一天 —— 顺便问一句，植发医院能打员工折吗？。</p>
+                    <div class="skills">
+                        <span class="skill">包装设计</span>
+                        <span class="skill">C4D</span>
+                        <span class="skill">blender</span>
+                        <span class="skill">CDR</span>
+                        <!-- <span class="skill">JavaScript</span>
+                        <span class="skill">React</span> -->
+                        <span class="skill">Photoshop</span>
+                        <span class="skill">Illustrator</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
+    
+    <!-- 作品展示部分 -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <h2>我的作品</h2>
+            
+            <!-- 作品分类导航 -->
+            <div class="portfolio-categories">
+                <button class="category-btn active" data-category="web">包装设计</button>
+                <button class="category-btn" data-category="app">产品海报</button>
+                <!-- <button class="category-btn" data-category="branding">品牌设计</button>
+                <button class="category-btn" data-category="illustration">插画</button> -->
+            </div>
+            
+            <!-- 包装设计作品 -->
+            <div id="web-works" class="works-container active">
+                <div class="works-grid">
+                    <div class="work-item">
+                        <img src="./images/去屑01.jpg" alt="包装设计1" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>去屑洗发水、AI、3D</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计01.jpg" alt="包装设计2" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>全英文系列洗护、AI、C4D、OC</p>
+                        </div>F
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计05.jpg" alt="包装设计3" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>全英文系列洗护、AI、blender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计02.jpg" alt="包装设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>个人作品集</h3>
+                            <p>创意设计师作品展示网站</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计03.jpg" alt="包装设计5" class="work-img">
+                        <div class="work-info">
+                            <h3>个人作品集</h3>
+                            <p>创意设计师作品展示网站</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计04.jpg" alt="包装设计6" class="work-img">
+                        <div class="work-info">
+                            <h3>个人作品集</h3>
+                            <p>创意设计师作品展示网站</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计06.jpg" alt="包装设计7" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>CDR/C4D/OC</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/英文001.jpg" alt="包装设计8" class="work-img">
+                        <div class="work-info">
+                            <h3>全英文系列包装设计</h3>
+                            <p>PS、AI</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/发膜包装设计07.jpg" alt="包装设计9" class="work-img">
+                        <div class="work-info">
+                            <h3>个人作品集</h3>
+                            <p>创意设计师作品展示网站</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计08.jpg" alt="包装设计10" class="work-img">
+                        <div class="work-info">
+                            <h3>个人作品集</h3>
+                            <p>创意设计师作品展示网站</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计09.jpg" alt="包装设计11" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDR、C4D、</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计10.jpg" alt="包装设计12" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDR、blender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计11.jpg" alt="网页设计13" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、AI、C4D</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计12.jpg" alt="网页设计14" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、AI、C4D</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计13.jpg" alt="网页设计15" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>发膜、AI、C4D、OC</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计14.jpg" alt="网页设计16" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>发膜、AI、C4D、OC</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计15.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、AI、C4D、OC</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计16.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDR、blender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计17.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>樱花沐浴露、AI、blender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计18.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDR、blender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计19.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>姜洗发水、AI、C4D、OC</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计20.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>全英文系列、AI、C4D、OC</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计21.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>试用装、CDR</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计22.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>试用装、CDR</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计23.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>洗护沐系列、AI、blender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计24.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>全英文系列、AI、C4D、OC</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计25.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计26.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计27.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计28.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计29.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计30.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计31.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计32.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计33.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计34.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计35.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计36.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/作品.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/作品02.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/作品03.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计37.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>防脱系列洗发水、CDRbalender</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计38.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>全英文系列、CDR、C4D、Arnold</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计39.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>全英文系列、CDR、C4D、OC</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="./images/包装设计40.jpg" alt="网页设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>包装设计</h3>
+                            <p>全英文系列、CDR、C4D、OC</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 产品海报 -->
+            <div id="app-works" class="works-container">
+                <div class="works-grid">
+                    <div class="work-item">
+                        <img src="https://source.unsplash.com/random/800x600/?mobile,app,1" alt="海报1" class="work-img">
+                        <div class="work-info">
+                            <h3>#</h3>
+                            <p>#</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="https://source.unsplash.com/random/800x600/?fitness,app,2" alt="海报2" class="work-img">
+                        <div class="work-info">
+                            <h3>#</h3>
+                            <p>#</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="https://source.unsplash.com/random/800x600/?finance,app,3" alt="海报3" class="work-img">
+                        <div class="work-info">
+                            <h3>#</h3>
+                            <p>#</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 品牌设计作品 -->
+            <div id="branding-works" class="works-container">
+                <div class="works-grid">
+                    <div class="work-item">
+                        <img src="https://source.unsplash.com/random/800x600/?logo,brand,1" alt="品牌设计1" class="work-img">
+                        <div class="work-info">
+                            <h3>科技公司品牌重塑</h3>
+                            <p>全面的品牌形象更新</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="https://source.unsplash.com/random/800x600/?packaging,design,2" alt="品牌设计2" class="work-img">
+                        <div class="work-info">
+                            <h3>产品包装设计</h3>
+                            <p>有机食品系列包装</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="https://source.unsplash.com/random/800x600/?stationery,design,3" alt="品牌设计3" class="work-img">
+                        <div class="work-info">
+                            <h3>企业文具系统</h3>
+                            <p>统一的企业形象文具设计</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="https://source.unsplash.com/random/800x600/?business,card,4" alt="品牌设计4" class="work-img">
+                        <div class="work-info">
+                            <h3>名片设计</h3>
+                            <p>创意名片设计方案</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 插画作品 -->
+            <div id="illustration-works" class="works-container">
+                <div class="works-grid">
+                    <div class="work-item">
+                        <img src="https://source.unsplash.com/random/800x600/?illustration,art,1" alt="插画1" class="work-img">
+                        <div class="work-info">
+                            <h3>数字插画系列</h3>
+                            <p>未来城市主题插画</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="https://source.unsplash.com/random/800x600/?character,design,2" alt="插画2" class="work-img">
+                        <div class="work-info">
+                            <h3>角色设计</h3>
+                            <p>游戏角色概念设计</p>
+                        </div>
+                    </div>
+                    <div class="work-item">
+                        <img src="https://source.unsplash.com/random/800x600/?book,illustration,3" alt="插画3" class="work-img">
+                        <div class="work-info">
+                            <h3>书籍插画</h3>
+                            <p>儿童图书插画系列</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 联系方式部分 -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>联系方式</h2>
+            <div class="contact-methods">
+                <div class="contact-method">
+                    <i class="fas fa-envelope"></i>
+                    <h3>电子邮件</h3>
+                    <p>754327144@qq.com</p>
+                </div>
+                <!-- <div class="contact-method">
+                    <i class="fas fa-phone"></i>
+                    <h3>电话</h3>
+                    <p>+86 15875155218</p>
+                </div> -->
+                <div class="contact-method">
+                    <i class="fab fa-weixin"></i>
+                    <h3>微信</h3>
+                    <p>lu754327144</p>
+                </div>
+                <div class="contact-method">
+                    <i class="fab fa-qq"></i>
+                    <h3>QQ</h3>
+                    <p>754327144</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 我的作品集. 保留所有权利.</p>
+        </div>
+    </footer>
+    
+    <!-- 图片放大预览模态框 -->
+    <div id="imageModal" class="image-modal">
+        <span class="close-modal">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="放大预览">
+        </div>
+    </div>
+    
+    <script>
+        // 图片放大预览功能
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const closeModal = document.querySelector('.close-modal');
+        
+        // 为轮播图和作品图片添加点击事件
+        document.querySelectorAll('.slide-item img, .work-img').forEach(img => {
+            img.addEventListener('click', function() {
+                modal.style.display = 'flex';
+                modalImg.src = this.src;
+            });
+        });
+        
+        // 关闭模态框
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+        
+        // 点击模态框背景也关闭
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        
+        // 作品分类切换功能
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        const worksContainers = document.querySelectorAll('.works-container');
+        
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 移除所有按钮的active类
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                // 给当前点击的按钮添加active类
+                btn.classList.add('active');
+                
+                // 隐藏所有作品容器
+                worksContainers.forEach(container => {
+                    container.classList.remove('active');
+                });
+                
+                // 显示对应的作品容器
+                const category = btn.getAttribute('data-category');
+                document.getElementById(`${category}-works`).classList.add('active');
+            });
+        });
+        
+        // 轮播图功能 - 实现首尾循环
+        const slide = document.querySelector('.carousel-slide');
+        const slideItems = document.querySelectorAll('.slide-item');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const navDots = document.querySelectorAll('.nav-dot');
+        
+        // 初始化计数器为1（跳过开头的克隆项）
+        let counter = 1;
+        const size = slideItems[0].clientWidth;
+        const totalItems = slideItems.length;
+        
+        // 设置初始位置
+        slide.style.transform = `translateX(${-size * counter}px)`;
+        
+        // 处理过渡结束事件
+        slide.addEventListener('transitionend', () => {
+            if (counter === 0) {
+                // 如果滑动到了开头的克隆项，无动画跳转到真实最后一项
+                slide.style.transition = 'none';
+                counter = totalItems - 2;
+                slide.style.transform = `translateX(${-size * counter}px)`;
+            } else if (counter === totalItems - 1) {
+                // 如果滑动到了末尾的克隆项，无动画跳转到真实第一项
+                slide.style.transition = 'none';
+                counter = 1;
+                slide.style.transform = `translateX(${-size * counter}px)`;
+            }
+            
+            // 强制重绘，确保无动画跳转生效
+            setTimeout(() => {
+                slide.style.transition = 'transform 0.5s ease-in-out';
+            }, 10);
+            
+            updateNavDots();
+        });
+        
+        // 下一张按钮
+        nextBtn.addEventListener('click', () => {
+            if (counter >= totalItems - 1) return;
+            counter++;
+            slide.style.transition = "transform 0.5s ease-in-out";
+            slide.style.transform = `translateX(${-size * counter}px)`;
+        });
+        
+        // 上一张按钮
+        prevBtn.addEventListener('click', () => {
+            if (counter <= 0) return;
+            counter--;
+            slide.style.transition = "transform 0.5s ease-in-out";
+            slide.style.transform = `translateX(${-size * counter}px)`;
+        });
+        
+        // 导航点点击
+        navDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                counter = parseInt(dot.getAttribute('data-index'));
+                slide.style.transition = "transform 0.5s ease-in-out";
+                slide.style.transform = `translateX(${-size * counter}px)`;
+                updateNavDots();
+            });
+        });
+        
+        // 自动轮播
+        let interval = setInterval(() => {
+            nextBtn.click();
+        }, 5000);
+        
+        // 鼠标悬停暂停自动轮播
+        document.querySelector('.carousel-container').addEventListener('mouseenter', () => {
+            clearInterval(interval);
+        });
+        
+        // 鼠标离开恢复自动轮播
+        document.querySelector('.carousel-container').addEventListener('mouseleave', () => {
+            interval = setInterval(() => {
+                nextBtn.click();
+            }, 5000);
+        });
+        
+        // 更新导航点状态
+        function updateNavDots() {
+            let activeIndex = counter;
+            if (activeIndex === 0) activeIndex = totalItems - 2;
+            else if (activeIndex === totalItems - 1) activeIndex = 1;
+            
+            navDots.forEach((dot, index) => {
+                if (index === activeIndex - 1) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        
+        // 响应式调整
+        window.addEventListener('resize', () => {
+            slide.style.transition = "none";
+            slide.style.transform = `translateX(${-slideItems[0].clientWidth * counter}px)`;
+        });
+        
+        // 搜索功能
+        const searchInput = document.querySelector('.search-bar input');
+        const searchButton = document.querySelector('.search-bar button');
+        
+        searchButton.addEventListener('click', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            alert(`正在搜索: ${searchTerm}\n这是一个演示功能，实际项目中会连接到搜索API`);
+        });
+        
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
- 
 </html>
